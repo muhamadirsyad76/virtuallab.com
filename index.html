@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Virtual: Gelombang, Getaran, dan Bunyi</title>
+    <style>
+        body { font-family: 'Arial', sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
+        .header { display: flex; align-items: center; background-color: #007bff; padding: 15px; color: white; }
+        .header img { height: 50px; margin-right: 15px; }
+        .header h1 { margin: 0; }
+        .container { max-width: 900px; margin: 20px auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        canvas { border: 2px solid #007bff; display: block; margin: 20px auto; }
+        .controls { margin: 20px; text-align: center; }
+        .info { text-align: left; padding: 10px; }
+        .info h2 { color: #007bff; }
+        .chatbox { max-width: 900px; margin: 20px auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        .chatbox input { width: 100%; padding: 10px; margin-top: 10px; border: 1px solid #ddd; border-radius: 5px; }
+        .chatbox p { text-align: left; background: #eef; padding: 10px; border-radius: 5px; }
+        .footer { margin-top: 20px; padding: 10px; background-color: #007bff; color: white; text-align: center; }
+        .whatsapp { text-align: center; margin: 20px; }
+        .whatsapp a { display: inline-block; background-color: #25D366; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; }
+        .video-container { text-align: center; margin: 20px auto; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="logo iain kediri virtual.png" alt="Logo Lab Virtual">
+        <h1>Lab Virtual: Gelombang, Getaran, dan Bunyi</h1>
+    </div>
+    <div class="container">
+        <p>Simulasi ini menunjukkan bagaimana gelombang merambat dan bagaimana perubahan frekuensi memengaruhi bentuk gelombang.</p>
+        <div class="controls">
+            <label for="frequency">Frekuensi: </label>
+            <input type="range" id="frequency" min="1" max="50" value="10">
+            <span id="freqValue">10</span> Hz
+        </div>
+        <canvas id="waveCanvas" width="600" height="200"></canvas>
+    </div>
+    
+    <div class="video-container">
+        <h2>Video Penjelasan</h2>
+        <video width="600" controls>
+            <source src="video.mp4" type="video/mp4">
+            Browser Anda tidak mendukung tag video.
+        </video>
+    </div>
+    
+    <div class="container info">
+        <h2>Apa Itu Getaran?</h2>
+        <p>Getaran adalah gerakan bolak-balik suatu benda terhadap titik keseimbangan. Contohnya adalah gerakan bandul jam atau senar gitar yang dipetik...</p>
+
+        <h2>Apa Itu Gelombang?</h2>
+        <p>Gelombang adalah perambatan energi dari satu titik ke titik lain tanpa perpindahan massa. 
+           Gelombang bisa berbentuk transversal (seperti gelombang di permukaan air) 
+           atau longitudinal (seperti gelombang bunyi diudara).</p>
+
+        <h2>Apa Itu Bunyi?</h2>
+        <p>Bunyi adalah gelombang mekanik yang merambat melalui medium seperti udara, air, atau benda padat. 
+           Bunyi dihasilkan oleh getaran suatu benda dan dapat didengar jika memiliki frekuensi dalam rentang pendengaran manusia (20 Hz - 20 kHz).</p>
+
+        <h2>Hubungan dengan Lab Virtual Ini</h2>
+        <p>Lab virtual ini memungkinkan Anda untuk melihat bagaimana frekuensi memengaruhi bentuk gelombang, yang merupakan dasar dari fenomena bunyi.
+           Dengan mengubah frekuensi, Anda dapat mengamati bagaimana gelombang menjadi lebih rapat atau lebih renggang, sesuai dengan prinsip dasar gelombang bunyi.</p>
+
+        <h2>Perbedaan Getaran Dan Gelombang Serta bunyi</h2>
+        <p>Perbedaan Getaran dan Gelombang serta Bunyi Perbedaan getaran,
+           gelombang, dan bunyi dapat dipantau dari prosesnya masing-masing. 
+           Berdasarkan pengertian yang sebelumnya dijelaskan, getaran merupakan 
+           suatu gerakan bolak-balik. Pengertian getaran ini akan berbeda 
+           ketika getaran yang dipantau hanya satu arah, sehingga disebut sebagai gelombang. 
+           Sementara bunyi adalah jenis gelombang mekanik yang butuh medium tertentu. 
+           Gelombang biasanya akan diterima oleh indera pendengar manusia 
+           supaya bisa diterima sebagai informasi. Dalam hal ini, 
+           telinga bagian luar dan berfungsi untuk memperkuat 
+           getaran gelombang bunyi, disebut daun telinga.</p>
+    </div>
+    </div>
+    </div>
+    </div>
+    
+    <div class="chatbox">
+        <h2>Interaksi</h2>
+        <p id="chatResponse">Tulis pertanyaan atau perintah Anda di bawah:</p>
+        <input type="text" id="chatInput" placeholder="Ketik pertanyaan...">
+    </div>
+    <div class="whatsapp">
+        <a href="https://wa.me/6285746060387" target="_blank">Hubungi Kami di WhatsApp</a>
+    </div>
+    <div class="footer">
+        <p>&copy; 2025 Lab Virtual Fisika By M Irsyadul Ibad.</p>
+    </div>
+    <script>
+        const canvas = document.getElementById("waveCanvas");
+        const ctx = canvas.getContext("2d");
+        const frequencyInput = document.getElementById("frequency");
+        const freqValue = document.getElementById("freqValue");
+        const chatInput = document.getElementById("chatInput");
+        const chatResponse = document.getElementById("chatResponse");
+        let t = 0;
+        let frequency = 10;
+
+        frequencyInput.addEventListener("input", function() {
+            frequency = this.value;
+            freqValue.textContent = this.value;
+        });
+
+        function drawWave() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.beginPath();
+            for (let x = 0; x < canvas.width; x++) {
+                let y = 100 + 30 * Math.sin((x / 30) * frequency * 0.1 + t);
+                if (x === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.strokeStyle = "#007bff";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            t += 0.1;
+            requestAnimationFrame(drawWave);
+        }
+        drawWave();
+        
+        chatInput.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                let question = chatInput.value.toLowerCase();
+                let answer = "Maaf, saya tidak mengerti pertanyaan Anda.";
+                if (question.includes("getaran")) answer = "Getaran adalah gerakan bolak-balik terhadap titik keseimbangan.";
+                if (question.includes("gelombang")) answer = "Gelombang adalah perambatan energi tanpa perpindahan massa.";
+                if (question.includes("bunyi")) answer = "Bunyi adalah gelombang mekanik yang merambat melalui medium.";
+                chatResponse.textContent = answer;
+                chatInput.value = "";
+            }
+        });
+    </script>
+</body>
+</html>
